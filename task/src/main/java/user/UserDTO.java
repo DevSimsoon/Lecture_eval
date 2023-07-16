@@ -4,9 +4,9 @@ public class UserDTO {
 	
 	private String userID;
 	private String userPassword;
-	private String userEmail;
-	private String userEmailHash;
-	private String userEmailChecked;
+//	private String userEmail;
+//	private String userEmailHash;
+//	private String userEmailChecked;
 	
 	public String getUserID() {
 		return userID;
@@ -20,32 +20,29 @@ public class UserDTO {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public String getUserEmail() {
-		return userEmail;
-	}
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-	public String getUserEmailHash() {
-		return userEmailHash;
-	}
-	public void setUserEmailHash(String userEmailHash) {
-		this.userEmailHash = userEmailHash;
-	}
-	public String getUserEmailChecked() {
-		return userEmailChecked;
-	}
-	public void setUserEmailChecked(String userEmailChecked) {
-		this.userEmailChecked = userEmailChecked;
-	}
+//	public String getUserEmail() {
+//		return userEmail;
+//	}
+//	public void setUserEmail(String userEmail) {
+//		this.userEmail = userEmail;
+//	}
+//	public String getUserEmailHash() {
+//		return userEmailHash;
+//	}
+//	public void setUserEmailHash(String userEmailHash) {
+//		this.userEmailHash = userEmailHash;
+//	}
+//	public String getUserEmailChecked() {
+//		return userEmailChecked;
+//	}
+//	public void setUserEmailChecked(String userEmailChecked) {
+//		this.userEmailChecked = userEmailChecked;
+//	}
 	
-	public UserDTO(String userID, String userPassword, String userEmail, String userEmailHash,
-			String userEmailChecked) {
+	public UserDTO(String userID, String userPassword) {
+		super();
 		this.userID = userID;
 		this.userPassword = userPassword;
-		this.userEmail = userEmail;
-		this.userEmailHash = userEmailHash;
-		this.userEmailChecked = userEmailChecked;
 	}
 	
 	

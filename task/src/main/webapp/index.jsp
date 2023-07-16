@@ -1,24 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter"%>
+<%@ page import="user.UserDAO"%>
 
 <!DOCTYPE html>
 <html>
-<head>
-<title>°­ÀÇÆò°¡</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<head>
+	<title>ê°•ì˜í‰ê°€</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- ºÎÆ®½ºÆ®·¦ CSS Ãß°¡ -->
+<!-- ë¶€íŠ¸ìŠ¤íŠ¸ëž© CSS ì¶”ê°€ -->
 <link rel="stylesheet" href="./css/bootstrap.min.css">
-<!-- Ä¿½ºÅÒ CSS Ãß°¡ -->
+<!-- ì»¤ìŠ¤í…€ CSS ì¶”ê°€ -->
 <link rel="stylesheet" href="./css/custom.css">
 </head>
 
 <body>
 
+<%
+	String userID = null;
+	if(session.getAttribute("userID") != null) {
+		userID = (String) session.getAttribute("userID");
+	}
+	
+	if(userID == null) {
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”.');");
+		script.println("location.href='userLogin.jsp'");
+		script.println("</script>");
+		script.close();
+	}
+%>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-	<a class="navbar-brand" href="index.jsp">°­ÀÇÆò°¡ »çÀÌÆ®</a>
+	<a class="navbar-brand" href="index.jsp">ê°•ì˜í‰ê°€ ì‚¬ì´íŠ¸</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 		<span class="navbar-toggler-icon"></span>
@@ -27,20 +44,29 @@
 	<div class="collapse navbar-collapse" id="navbar">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="index.jsp">¸ÞÀÎ</a>
+				<a class="nav-link" href="index.jsp">ë©”ì¸</a>
 			</li>
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" id="dropdown" data-toggle="dropdown">È¸¿ø °ü¸®</a>
+				<a class="nav-link dropdown-toggle" id="dropdown" data-toggle="dropdown">íšŒì› ê´€ë¦¬</a>
 			<div class="dropdown-menu" aria-labelledby="dropdown">
-				<a class="dropdown-item" href="userLogin.jsp">·Î±×ÀÎ</a>
-				<a class="dropdown-item" href="userRegister.jsp">È¸¿ø°¡ÀÔ</a>
-				<a class="dropdown-item" href="#">·Î±×¾Æ¿ô</a>
+			<%
+				if(userID == null) {
+			%>
+				<a class="dropdown-item" href="userLogin.jsp">ë¡œê·¸ì¸</a>
+				<a class="dropdown-item" href="userRegister.jsp">íšŒì›ê°€ìž…</a>
+				<%
+					} else {
+				%>
+				<a class="dropdown-item" href="userLogout.jsp">ë¡œê·¸ì•„ì›ƒ</a>
+				<%
+					}
+				%>
 			</div>
 			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä." aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">°Ë»ö</button>
+			<input class="form-control mr-sm-2" type="search" placeholder="ë‚´ìš©ì„ ìž…ë ¥í•˜ì„¸ìš”." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">ê²€ìƒ‰</button>
 		</form>
 	</div>
 </nav>
@@ -49,40 +75,40 @@
 
 	<form method="get" action="./index.jsp" class="form-inline mt-3">
 		<select name="lectureDivide" class="form-control mx-1 mt-2">
-			<option value="ÀüÃ¼">ÀüÃ¼</option>
-			<option value="Àü°ø">Àü°ø</option>
-			<option value="±³¾ç">±³¾ç</option>
-			<option value="±âÅ¸">±âÅ¸</option>
+			<option value="ì „ì²´">ì „ì²´</option>
+			<option value="ì „ê³µ">ì „ê³µ</option>
+			<option value="êµì–‘">êµì–‘</option>
+			<option value="ê¸°íƒ€">ê¸°íƒ€</option>
 		</select>
-		<input type="text" name="search" class="form-control mx-1 mt-2" placeholder="³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä.">
-        <button type="submit" class="btn btn-primary mx-1 mt-2">°Ë»ö</button>
-        <a class="btn btn-primary mx-1 mt-2" data-toggle="modal" href="#registerModal">µî·ÏÇÏ±â</a>
-        <a class="btn btn-danger ml-1 mt-2" data-toggle="modal" href="#reportModal">½Å°í</a>
+		<input type="text" name="search" class="form-control mx-1 mt-2" placeholder="ë‚´ìš©ì„ ìž…ë ¥í•˜ì„¸ìš”.">
+        <button type="submit" class="btn btn-primary mx-1 mt-2">ê²€ìƒ‰</button>
+        <a class="btn btn-primary mx-1 mt-2" data-toggle="modal" href="#registerModal">ë“±ë¡í•˜ê¸°</a>
+        <a class="btn btn-danger ml-1 mt-2" data-toggle="modal" href="#reportModal">ì‹ ê³ </a>
 	</form>
 	
 	<div class="card bg-light mt-3">
         <div class="card-header bg-light">
           <div class="row">
-            <div class="col-8 text-left">ÄÄÇ»ÅÍ°³·Ð&nbsp;<small>ÃÖ½ÂÂù</small></div>
-            <div class="col-4 text-right">Á¾ÇÕ <span style="color: red;">A</span>
+            <div class="col-8 text-left">ì»´í“¨í„°ê°œë¡ &nbsp;<small>ìµœìŠ¹ì°¬</small></div>
+            <div class="col-4 text-right">ì¢…í•© <span style="color: red;">A</span>
             </div>
           </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">
-            Á¤¸» ÁÁÀº °­ÀÇ¿¡¿ä.&nbsp;<small>(2017³â °¡À»ÇÐ±â)</small>
+            ì •ë§ ì¢‹ì€ ê°•ì˜ì—ìš”.&nbsp;<small>(2017ë…„ ê°€ì„í•™ê¸°)</small>
           </h5>
-          <p class="card-text">°­ÀÇ°¡ ¸¹ÀÌ ³Î³ÎÇØ¼­, ¼ÖÁ÷È÷ ¸¹ÀÌ ¹è¿î °Ç ¾ø´Â °Í °°Áö¸¸ ÇÐÁ¡µµ Àß ³ª¿À°í ³Ê¹« ÁÁÀº °Í °°½À´Ï´Ù.</p>
+          <p class="card-text">ê°•ì˜ê°€ ë§Žì´ ë„ë„í•´ì„œ, ì†”ì§ížˆ ë§Žì´ ë°°ìš´ ê±´ ì—†ëŠ” ê²ƒ ê°™ì§€ë§Œ í•™ì ë„ ìž˜ ë‚˜ì˜¤ê³  ë„ˆë¬´ ì¢‹ì€ ê²ƒ ê°™ìŠµë‹ˆë‹¤.</p>
           <div class="row">
             <div class="col-9 text-left">
-              ¼ºÀû <span style="color: red;">A</span>
-              ³Î³Î <span style="color: red;">A</span>
-              °­ÀÇ <span style="color: red;">B</span>
-              <span style="color: green;">(ÃßÃµ: 15¡Ú)</span>
+              ì„±ì  <span style="color: red;">A</span>
+              ë„ë„ <span style="color: red;">A</span>
+              ê°•ì˜ <span style="color: red;">B</span>
+              <span style="color: green;">(ì¶”ì²œ: 15â˜…)</span>
             </div>
             <div class="col-3 text-right">
-              <a onclick="return confirm('ÃßÃµÇÏ½Ã°Ú½À´Ï±î?')" href="./likeAction.jsp?evaluationID=">ÃßÃµ</a>
-              <a onclick="return confirm('»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?')" href="./deleteAction.jsp?evaluationID=">»èÁ¦</a>
+              <a onclick="return confirm('ì¶”ì²œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./likeAction.jsp?evaluationID=">ì¶”ì²œ</a>
+              <a onclick="return confirm('ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./deleteAction.jsp?evaluationID=">ì‚­ì œ</a>
             </div>
           </div>
         </div>
@@ -91,26 +117,26 @@
 	<div class="card bg-light mt-3">
         <div class="card-header bg-light">
           <div class="row">
-            <div class="col-8 text-left">ÄÄÇ»ÅÍ±×·¡ÇÈ½º&nbsp;<small>¹Ú¿¹¸²</small></div>
-            <div class="col-4 text-right">Á¾ÇÕ <span style="color: red;">B</span>
+            <div class="col-8 text-left">ì»´í“¨í„°ê·¸ëž˜í”½ìŠ¤&nbsp;<small>ë°•ì˜ˆë¦¼</small></div>
+            <div class="col-4 text-right">ì¢…í•© <span style="color: red;">B</span>
             </div>
           </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">
-            ³ª»ÚÁö ¾ÊÀº °Í °°½À´Ï´Ù.&nbsp;<small>(2017³â ¿©¸§ÇÐ±â)</small>
+            ë‚˜ì˜ì§€ ì•Šì€ ê²ƒ ê°™ìŠµë‹ˆë‹¤.&nbsp;<small>(2017ë…„ ì—¬ë¦„í•™ê¸°)</small>
           </h5>
-          <p class="card-text">ÄÄÇ»ÅÍ±×·¡ÇÈ½º¸¦ Ã³À½ ¹è¿ü´Âµ¥, »ó´çÈ÷ Àç¹ÌÀÖ¾ú´ø °Í °°¾Æ¿ä.</p>
+          <p class="card-text">ì»´í“¨í„°ê·¸ëž˜í”½ìŠ¤ë¥¼ ì²˜ìŒ ë°°ì› ëŠ”ë°, ìƒë‹¹ížˆ ìž¬ë¯¸ìžˆì—ˆë˜ ê²ƒ ê°™ì•„ìš”.</p>
           <div class="row">
             <div class="col-9 text-left">
-              ¼ºÀû <span style="color: red;">B</span>
-              ³Î³Î <span style="color: red;">C</span>
-              °­ÀÇ <span style="color: red;">B</span>
-              <span style="color: green;">(ÃßÃµ: 1)</span>
+              ì„±ì  <span style="color: red;">B</span>
+              ë„ë„ <span style="color: red;">C</span>
+              ê°•ì˜ <span style="color: red;">B</span>
+              <span style="color: green;">(ì¶”ì²œ: 1)</span>
             </div>
             <div class="col-3 text-right">
-              <a onclick="return confirm('ÃßÃµÇÏ½Ã°Ú½À´Ï±î?')" href="./likeAction.jsp?evaluationID=">ÃßÃµ</a>
-              <a onclick="return confirm('»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?')" href="./deleteAction.jsp?evaluationID=">»èÁ¦</a>
+              <a onclick="return confirm('ì¶”ì²œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./likeAction.jsp?evaluationID=">ì¶”ì²œ</a>
+              <a onclick="return confirm('ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./deleteAction.jsp?evaluationID=">ì‚­ì œ</a>
             </div>
           </div>
         </div>
@@ -119,26 +145,26 @@
       <div class="card bg-light mt-3">
         <div class="card-header bg-light">
           <div class="row">
-            <div class="col-8 text-left">¾Ë°í¸®Áò&nbsp;<small>ÀåÀçÇõ</small></div>
-            <div class="col-4 text-right">Á¾ÇÕ <span style="color: red;">A</span>
+            <div class="col-8 text-left">ì•Œê³ ë¦¬ì¦˜&nbsp;<small>ìž¥ìž¬í˜</small></div>
+            <div class="col-4 text-right">ì¢…í•© <span style="color: red;">A</span>
             </div>
           </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">
-            °­ÀÇ·ÂÀÌ Á¦ÀÏ ÁÁÀº °­ÀÇÀÔ´Ï´Ù.&nbsp;<small>(2017³â 2ÇÐ±â)</small>
+            ê°•ì˜ë ¥ì´ ì œì¼ ì¢‹ì€ ê°•ì˜ìž…ë‹ˆë‹¤.&nbsp;<small>(2017ë…„ 2í•™ê¸°)</small>
           </h5>
-          <p class="card-text">¾Ë°í¸®Áò °­ÀÇ °¡¸£Ä¡½Ã´Â ±³¼ö´Ôµé Áß¿¡¼­ ÃÖ°í·Î Àß °¡¸£Ä¡½Ê´Ï´Ù.</p>
+          <p class="card-text">ì•Œê³ ë¦¬ì¦˜ ê°•ì˜ ê°€ë¥´ì¹˜ì‹œëŠ” êµìˆ˜ë‹˜ë“¤ ì¤‘ì—ì„œ ìµœê³ ë¡œ ìž˜ ê°€ë¥´ì¹˜ì‹­ë‹ˆë‹¤.</p>
           <div class="row">
             <div class="col-9 text-left">
-              ¼ºÀû <span style="color: red;">A</span>
-              ³Î³Î <span style="color: red;">C</span>
-              °­ÀÇ <span style="color: red;">A</span>
-              <span style="color: green;">(ÃßÃµ: 0)</span>
+              ì„±ì  <span style="color: red;">A</span>
+              ë„ë„ <span style="color: red;">C</span>
+              ê°•ì˜ <span style="color: red;">A</span>
+              <span style="color: green;">(ì¶”ì²œ: 0)</span>
             </div>
             <div class="col-3 text-right">
-              <a onclick="return confirm('ÃßÃµÇÏ½Ã°Ú½À´Ï±î?')" href="./likeAction.jsp?evaluationID=">ÃßÃµ</a>
-              <a onclick="return confirm('»èÁ¦ÇÏ½Ã°Ú½À´Ï±î?')" href="./deleteAction.jsp?evaluationID=">»èÁ¦</a>
+              <a onclick="return confirm('ì¶”ì²œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./likeAction.jsp?evaluationID=">ì¶”ì²œ</a>
+              <a onclick="return confirm('ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?')" href="./deleteAction.jsp?evaluationID=">ì‚­ì œ</a>
             </div>
           </div>
         </div>
@@ -147,10 +173,10 @@
 
 	<ul class= "pagination justify-content-center mt-3">
 		<li class= "page-item">
-			<a class="page-link" href="#">ÀÌÀü</a>
+			<a class="page-link" href="#">ì´ì „</a>
 		</li>
 		<li class= "page-item">
-			<a class="page-link" href="#">´ÙÀ½</a>
+			<a class="page-link" href="#">ë‹¤ìŒ</a>
 		</li>
 	</ul>
 	
@@ -158,8 +184,8 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modal">Æò°¡ µî·Ï</h5>
-					<button type="button" class="close" data-dismiss="modla" aria-laber="Close">
+					<h5 class="modal-title" id="modal">í‰ê°€ ë“±ë¡</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-laber="Close">
 						<span aria-hideen="ture">&times;</span>
 					</button>
 				</div>
@@ -167,17 +193,17 @@
 					<form action="./evaluationRegisterAction.jsp" method="post">
 						<div class="form-row">
 							<div class="form-group col-sm-6">
-								<label>°­ÀÇ¸í</label>
+								<label>ê°•ì˜ëª…</label>
 								<input type="text" name= "lectureName" class="form-control" maxlength="20">
 							</div>
 							<div class="form-group col-sm-6">
-								<label>±³¼ö¸í</label>
+								<label>êµìˆ˜ëª…</label>
 								<input type="text" name= "professorName" class="form-control" maxlength="20">
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-sm-4">
-								<label>¼ö°­ ¿¬µµ</label>
+								<label>ìˆ˜ê°• ì—°ë„</label>
 								<select name="lectureYear" class="form-control">
 									<option value="2011">2011</option>
 									<option value="2012">2012</option>
@@ -196,35 +222,35 @@
 							</div>
 							
 							<div class="form-group col-sm-4">
-								<label>¼ö°­ ÇÐ±â</label>
+								<label>ìˆ˜ê°• í•™ê¸°</label>
 								<select name="semesterDivide" class="form-control">
-									<option name="1ÇÐ±â" selected>1ÇÐ±â</option>
-									<option name="¿©¸§ÇÐ±â">¿©¸§ÇÐ±â</option>
-									<option name="2ÇÐ±â">2ÇÐ±â</option>
-									<option name="°Ü¿ïÇÐ±â">°Ü¿ïÇÐ±â</option>
+									<option name="1í•™ê¸°" selected>1í•™ê¸°</option>
+									<option name="ì—¬ë¦„í•™ê¸°">ì—¬ë¦„í•™ê¸°</option>
+									<option name="2í•™ê¸°">2í•™ê¸°</option>
+									<option name="ê²¨ìš¸í•™ê¸°">ê²¨ìš¸í•™ê¸°</option>
 								</select>
 							</div>
 							
 								<div class="form-group col-sm-4">
-								<label>°­ÀÇ ±¸ºÐ</label>
+								<label>ê°•ì˜ êµ¬ë¶„</label>
 								<select name="lectureDivide" class="form-control">
-									<option name= "Àü°ø" selected>Àü°ø</option>
-									<option name= "±³¾ç" selected>±³¾ç</option>
-									<option name= "±âÅ¸" selected>±âÅ¸</option>
+									<option name= "ì „ê³µ" selected>ì „ê³µ</option>
+									<option name= "êµì–‘" selected>êµì–‘</option>
+									<option name= "ê¸°íƒ€" selected>ê¸°íƒ€</option>
 								</select>
 							</div>			
 						</div>	
 						<div class="form-group">
-							<label>Á¦¸ñ</label>
+							<label>ì œëª©</label>
 							<input type="text" name="evaluationTitle" class="form-control" maxlength="20">
 						</div>
 						<div class="form-group">
-							<label>³»¿ë</label>
+							<label>ë‚´ìš©</label>
 							<textarea type="text" name="evaluarionContent" class="form-control" maxlength="2048" style="height:180px;"></textarea>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-sm-3">
-								<label>Á¾ÇÕ</label>
+								<label>ì¢…í•©</label>
 								<select name="totalScore" class="form-control">
 									<option value="A" selected>A</option>
 									<option value="B" >B</option>
@@ -235,7 +261,7 @@
 							</div>
 							
 							<div class="form-group col-sm-3">
-								<label>¼ºÀû</label>
+								<label>ì„±ì </label>
 								<select name="creditScore" class="form-control">
 									<option value="A" selected>A</option>
 									<option value="B" >B</option>
@@ -246,7 +272,7 @@
 							</div>
 							
 							<div class="form-group col-sm-3">
-								<label>³Î³Î</label>
+								<label>ë„ë„</label>
 								<select name="comfortableScore" class="form-control">
 									<option value="A" selected>A</option>
 									<option value="B" >B</option>
@@ -257,7 +283,7 @@
 							</div>
 							
 							<div class="form-group col-sm-3">
-								<label>°­ÀÇ</label>
+								<label>ê°•ì˜</label>
 								<select name="lectureScore" class="form-control">
 									<option value="A" selected>A</option>
 									<option value="B" >B</option>
@@ -268,8 +294,8 @@
 							</div>
 						</div>
 						<div class="modal-foother">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Ãë¼Ò</button>
-							<button type="submit" class="btn btn-primary" data-dismiss="modal">µî·ÏÇÏ±â</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">ì·¨ì†Œ</button>
+							<button type="submit" class="btn btn-primary" data-dismiss="modal">ë“±ë¡í•˜ê¸°</button>
 						</div>
 					</form>
 				</div>
@@ -281,7 +307,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modal">½Å°íÇÏ±â</h5>
+            <h5 class="modal-title" id="modal">ì‹ ê³ í•˜ê¸°</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -289,16 +315,16 @@
           <div class="modal-body">
             <form method="post" action="./reportAction.jsp">
               <div class="form-group">
-                <label>½Å°í Á¦¸ñ</label>
+                <label>ì‹ ê³  ì œëª©</label>
                 <input type="text" name="reportTitle" class="form-control" maxlength="20">
               </div>
               <div class="form-group">
-                <label>½Å°í ³»¿ë</label>
+                <label>ì‹ ê³  ë‚´ìš©</label>
                 <textarea type="text" name="reportContent" class="form-control" maxlength="2048" style="height: 180px;"></textarea>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ãë¼Ò</button>
-                <button type="submit" class="btn btn-danger">½Å°íÇÏ±â</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ì·¨ì†Œ</button>
+                <button type="submit" class="btn btn-danger">ì‹ ê³ í•˜ê¸°</button>
               </div>
             </form>
           </div>
@@ -307,14 +333,14 @@
     </div>
 	
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF;">
-		Copyright ¨Ï "ÀÎ´ö¿ø±³À°¼Ò" All Rights Reserved.
+		Copyright â“’ "ì¸ë•ì›êµìœ¡ì†Œ" All Rights Reserved.
 	</footer>
 	
-<!-- Á¦ÀÌÄõ¸® Ãß°¡ -->
+<!-- ì œì´ì¿¼ë¦¬ ì¶”ê°€ -->
 <script src="./js/jquery.min.js"></script>
-<!-- Popper Ãß°¡ -->
+<!-- Popper ì¶”ê°€ -->
 <script src="./js/popper.min.js"></script>
-<!-- ºÎÆ®½ºÆ®·¦ Ãß°¡ -->
+<!-- ë¶€íŠ¸ìŠ¤íŠ¸ëž© ì¶”ê°€ -->
 <script src="./js/bootstrap.min.js"></script>
 
 </body>

@@ -1,24 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>������</title>
+<title>강의평가</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- ��Ʈ��Ʈ�� CSS �߰� -->
+<!-- 부트스트랩 CSS 추가 -->
 <link rel="stylesheet" href="./css/bootstrap.min.css">
-<!-- Ŀ���� CSS �߰� -->
+<!-- 커스텀 CSS 추가 -->
 <link rel="stylesheet" href="./css/custom.css">
 </head>
 
 <body>
 
+<%
+	String userID = null;
+	if(session.getAttribute("userID") != null) { 
+		userID = (String) session.getAttribute("userID");
+	}
+	
+	if(userID != null) {
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('로그인이 된 상태입니다.');");
+		script.println("location.href='index.jsp'");
+		script.println("</script>");
+		script.close();
+	}
+	
+%>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-	<a class="navbar-brand" href="index.jsp">������ ����Ʈ</a>
+	<a class="navbar-brand" href="index.jsp">강의평가 사이트</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 		<span class="navbar-toggler-icon"></span>
@@ -27,52 +44,57 @@
 	<div class="collapse navbar-collapse" id="navbar">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="index.jsp">����</a>
+				<a class="nav-link" href="index.jsp">메인</a>
 			</li>
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" id="dropdown" data-toggle="dropdown">ȸ�� ����</a>
+				<a class="nav-link dropdown-toggle" id="dropdown" data-toggle="dropdown">회원 관리</a>
 			<div class="dropdown-menu" aria-labelledby="dropdown">
-				<a class="dropdown-item" href="userLogin.jsp">�α���</a>
-				<a class="dropdown-item" href="userRegister.jsp">ȸ������</a>
-				<a class="dropdown-item" href="#">�α׾ƿ�</a>w
+				<%
+         	if(userID == null) {
+         %>
+            <a class="dropdown-item" href="userLogin.jsp">로그인</a>
+            <a class="dropdown-item" href="userRegister.jsp">회원가입</a>
+            <%
+         		} else {
+            %>
+            <a class="dropdown-item" href="#">로그아웃</a>
+            <%
+         		}
+            %>
 			</div>
 			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="������ �Է��ϼ���." aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">�˻�</button>
+			<input class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
 		</form>
 	</div>
 </nav>
 
 	<div class="container mt-3" style="max-width: 560px;">
- 		<form method="post action="./userLoginAction.jsp">
+ 		<form method="post" action="./userRegisterAction.jsp">
  			<div class="form-group">
- 				<label>���̵�</label>
+ 				<label>아이디</label>
  				<input type="text" name="userID" class="form-control">
  			</div>
  			<div class="form-group">
- 				<label>��й�ȣ</label>
+ 				<label>비밀번호</label>
  				<input type="password" name="userPassword" class="form-control">
  			</div>
- 			<div class="form-group">
- 				<label>�̸���</label>
- 				<input type="emaill" name="userEmail" class="form-control">
- 			</div>
- 			<button type="submit" class="btn btn-primary">ȸ������</button>
+ 			<button type="submit" class="btn btn-primary">회원가입</button>
  		</form>
   	</div>
 
 
 <footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF;">
-		Copyright �� "�δ���������" All Rights Reserved.
+		Copyright ⓒ "인덕원교육소" All Rights Reserved.
 	</footer>
 	
-<!-- �������� �߰� -->
+<!-- 제이쿼리 추가 -->
 <script src="./js/jquery.min.js"></script>
-<!-- Popper �߰� -->
+<!-- Popper 추가 -->
 <script src="./js/popper.min.js"></script>
-<!-- ��Ʈ��Ʈ�� �߰� -->
+<!-- 부트스트랩 추가 -->
 <script src="./js/bootstrap.min.js"></script>
 
 </body>
